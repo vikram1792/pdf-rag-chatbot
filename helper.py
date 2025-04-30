@@ -60,9 +60,7 @@ Answer:"""
         RunnableMap({
             "input": lambda x: x,
             "context": lambda x: "\n\n".join(
-                doc.page_content for doc in retriever.invoke(x)
-            )
-        })
+    str(doc.page_content) for doc in retriever.invoke(x) if doc.page_content)})
         | prompt
         | llm
         | output_parser
