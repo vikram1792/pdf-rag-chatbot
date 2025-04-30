@@ -1,5 +1,3 @@
-# pdf_chain.py
-
 import os
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -19,7 +17,7 @@ EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-ada-002")
 
 
 def load_and_split_pdf(file_path):
-    """Load PDF and split into chunks"""
+    """Load PDF fle & split it into chunks"""
     loader = PyPDFLoader(file_path)
     documents = loader.load()
 
@@ -28,9 +26,9 @@ def load_and_split_pdf(file_path):
 
 
 def setup_vectorstore(documents):
-    """Initialize Pinecone vectorstore and add documents"""
+    """Init pinecone vectorstore and add documents"""
     if not documents:
-        raise ValueError("No documents provided")
+        raise ValueError("No documents provided by user")
 
     embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY, model=EMBEDDING_MODEL)
     pc = Pinecone(api_key=PINECONE_API_KEY)
@@ -41,10 +39,10 @@ def setup_vectorstore(documents):
 
 
 def build_chain(retriever):
-    """Build a retrieval QA chain"""
+    """Build retrieval QA chain"""
     prompt = ChatPromptTemplate.from_template(
         """You are an expert PDF assistant.
-Given the context from the PDF and a user question, generate a helpful and concise answer.
+Given the context from the PDF and a user question, generate helpful answer.
 
 Context:
 {context}
